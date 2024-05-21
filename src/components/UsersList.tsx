@@ -1,32 +1,21 @@
+import { useUsers } from '@/app/hooks/useUsers';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
+import { Skeleton } from './ui/skeleton';
 import { Switch } from './ui/switch';
 
-const users = [
-  {
-    id: Math.random(),
-    name: 'Rodrigo Costa',
-    username: 'costarodrigo22',
-  },
-  {
-    id: Math.random(),
-    name: 'Gabriel Alves',
-    username: 'souzagabriel1',
-  },
-  {
-    id: Math.random(),
-    name: 'Guilherme Vieira',
-    username: 'viieiiragui',
-  },
-  {
-    id: Math.random(),
-    name: 'Mateus Silva',
-    username: 'maateusilva',
-  },
-];
-
 export function UsersList() {
+  const { users, isLoading } = useUsers();
+
   return (
     <div className="space-y-4">
+      {isLoading && (
+        <>
+          <Skeleton className="h-[74px]" />
+          <Skeleton className="h-[74px]" />
+          <Skeleton className="h-[74px]" />
+        </>
+      )}
+
       {users.map((user) => (
         <div key={user.id} className="flex items-center justify-between border p-4 rounded-md">
           <div className="flex items-center gap-4">
