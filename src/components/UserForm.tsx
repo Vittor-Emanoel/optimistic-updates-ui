@@ -3,6 +3,8 @@ import { cn } from '@/app/libs/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { CircleAlert } from 'lucide-react';
 import { useForm } from 'react-hook-form';
+
+import { useUsers } from '@/app/hooks/useUsers';
 import { toast } from 'sonner';
 import { z } from 'zod';
 import { Button } from './ui/Button';
@@ -11,12 +13,15 @@ import { Input } from './ui/input';
 const createUserSchema = z.object({
   name: z.string().min(3, { message: 'Insira no minimo 3 caracteres' }),
   username: z.string().min(3, { message: 'Insira no minimo 3 caracteres' }),
-  blocked: z.boolean(),
+
+
 });
 
 type createUserData = z.infer<typeof createUserSchema>;
+
 export function UserForm() {
   const { createUser, isLoading } = useCreateUser();
+  const { refetch } = useUsers();
   const {
     register,
     handleSubmit: hookFormSubmit,
@@ -33,9 +38,10 @@ export function UserForm() {
         blocked: false,
       });
 
-      toast('Usuario cadastrado com sucesso!');
+      toast.success('Usuario cadastrado com sucesso!');
+      refetch();
     } catch {
-      toast('Erro ao cadastrar o usuario!');
+      toast.error('Erro ao cadastrar o usuario!');
     }
   }
 
@@ -71,7 +77,13 @@ export function UserForm() {
           )}
         </div>
       </div>
-      <Button className="mt-2 w-full">Cadastrar</Button>
+      <Button
+        type='submit'
+        className="mt-2 w-full"
+        disabled={isLoading}
+      >
+        Cadastrar
+      </Button>
     </form>
   );
 }

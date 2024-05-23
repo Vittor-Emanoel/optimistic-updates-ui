@@ -30,7 +30,10 @@ export function UsersList() {
             </div>
           </div>
 
-          <Switch />
+          <Switch
+            checked={user.blocked}
+
+          />
         </div>
       ))}
     </div>
